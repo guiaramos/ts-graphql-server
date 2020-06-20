@@ -3,20 +3,30 @@
   "version": "0.0.1",
   "description": "Start server with TypeScript, GraphQL, PG and TypeORM.",
   "scripts": {
-    "start": "ts-node-dev --respawn src/index.ts",
+    "start": "npm run generate && ts-node-dev --respawn src/index.ts",
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
     "lint": "eslint --fix src/**/*.{js,jsx,ts,tsx}",
-    "db": "docker-compose up --build"
+    "db": "docker-compose up --build",
+    "generate": "graphql-codegen"
   },
   "devDependencies": {
+    "@graphql-codegen/add": "^1.15.4",
+    "@graphql-codegen/cli": "^1.15.4",
+    "@graphql-codegen/schema-ast": "^1.15.4",
+    "@graphql-codegen/typescript": "^1.15.4",
+    "@graphql-codegen/typescript-resolvers": "^1.15.4",
     "@types/node": "^14.0.13",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-typescript-prettier": "^2.1.1",
     "prettier": "^1.19.1",
     "ts-node-dev": "^1.0.0-pre.49",
-    "typescript": "^3.7.3"
+    "typescript": "^3.9.5"
   },
   "dependencies": {
+    "@graphql-tools/load-files": "^6.0.10",
+    "@graphql-tools/merge": "^6.0.10",
+    "@graphql-tools/schema": "^6.0.10",
+    "graphql": "^15.1.0",
     "graphql-yoga": "^1.18.3",
     "pg": "^8.2.1",
     "reflect-metadata": "^0.1.13",

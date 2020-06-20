@@ -1,17 +1,6 @@
 import { createConnection } from 'typeorm';
 import { GraphQLServer, Options } from 'graphql-yoga';
-
-const typeDefs = `
-  type Query {
-    hello(name: String): String!
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: (_: any, { name }: any) => `Hello ${name || 'World'}`
-  }
-};
+import GraphQLSetup from './graphql';
 
 function server() {
   const logs = (isConnected: boolean) => {
@@ -23,7 +12,10 @@ function server() {
   };
 
   const graphqlServer = async () => {
-    const yogaServer = new GraphQLServer({ typeDefs, resolvers });
+    const yogaServer = new GraphQLServer({
+      typeDefs: GraphQLSetup().getProps().typeDefs,
+      resolvers: GraphQLSetup().getProps().resolvers
+    });
 
     const options: Options = {
       port: process.env.PORT,
