@@ -1,0 +1,25 @@
+{
+  "name": "ts-graphql-server",
+  "version": "0.0.1",
+  "description": "Start server with TypeScript, GraphQL, PG and TypeORM.",
+  "scripts": {
+    "start": "ts-node-dev --respawn src/index.ts",
+    "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
+    "lint": "eslint --fix src/**/*.{js,jsx,ts,tsx}",
+    "db": "docker-compose up --build"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.13",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-typescript-prettier": "^2.1.1",
+    "prettier": "^1.19.1",
+    "ts-node-dev": "^1.0.0-pre.49",
+    "typescript": "^3.7.3"
+  },
+  "dependencies": {
+    "graphql-yoga": "^1.18.3",
+    "pg": "^8.2.1",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.25"
+  }
+}

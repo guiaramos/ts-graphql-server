@@ -1,0 +1,13 @@
+# docker-compose.yml
+version: '3.8'
+services:
+  postgres:
+    image: postgres:11 # use 11th official postgres version
+    ports:
+      - ${TYPEORM_PORT}:5432
+    env_file:
+      - .env # configure postgres
+    volumes:
+      - pg_data:/var/lib/postgres/data # persist data even if container shuts down
+volumes:
+  pg_data: # named volumes can be managed easier using docker-compose
