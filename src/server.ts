@@ -27,14 +27,14 @@ function server() {
 
     const options: Options = {
       port: process.env.PORT,
-      endpoint: '/graphql',
-      subscriptions: '/subscriptions',
-      playground: '/playground'
+      endpoint: `/${process.env.ENDPOINT}`,
+      subscriptions: `/${process.env.SUBSCRIPTIONS}`,
+      playground: `/${process.env.PLAYGROUND}`
     };
 
     await yogaServer.start(options, ({ port, endpoint }) =>
       console.log(
-        `🚀 Server ready at: http://${process.env.HOST}:${port}${endpoint}`
+        `🚀 Server ready at: ${process.env.CONNECTION}://${process.env.HOST}:${port}${endpoint}`
       )
     );
   };

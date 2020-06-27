@@ -1,9 +1,9 @@
 import { IResolvers } from '../../generated/graphql';
-import mutationRegister from './controllers/register.controller';
+import queryHello from './controllers/hello.controller';
 
 const resolvers: IResolvers = {
-  Mutation: {
-    register: mutationRegister
+  Query: {
+    hello: queryHello
   }
 };
 
