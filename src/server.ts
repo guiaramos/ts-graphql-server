@@ -1,14 +1,22 @@
 import { createConnection } from 'typeorm';
+import * as dotenv from 'dotenv';
 import { GraphQLServer, Options } from 'graphql-yoga';
 import GraphQLSetup from './graphql';
+import { defaultConnection } from './config/typeorm';
 
 function server() {
+  dotenv.config();
   const logs = (isConnected: boolean) => {
     console.log(`Database ready: ${isConnected}`);
   };
   const connectDB = async () => {
-    const { isConnected } = await createConnection();
-    return isConnected;
+    try {
+      const { isConnected } = await createConnection(defaultConnection);
+      return isConnected;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
   };
 
   const graphqlServer = async () => {
