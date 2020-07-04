@@ -19,5 +19,7 @@ describe('Server - e2e', () => {
 
   afterEach(async () => stop());
 
-  it('should start without error', function() {});
+  it('should start without error', function() {
+    // TODO: e2e test
+  });
 });
