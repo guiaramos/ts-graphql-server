@@ -1,53 +1,84 @@
-import { createConnection } from 'typeorm';
-import * as dotenv from 'dotenv';
-import { GraphQLServer, Options } from 'graphql-yoga';
+import express from 'express';
+import http from 'http';
+import { createConnection, getConnection, getConnectionOptions } from 'typeorm';
+import { ApolloServer } from 'apollo-server-express';
 import GraphQLSetup from './graphql';
-import { defaultConnection } from './config/typeorm';
+import { loadEnv } from './lib/loadEnvoriment';
 
-function server() {
-  dotenv.config();
-  const logs = (isConnected: boolean) => {
-    console.log(`Database ready: ${isConnected}`);
-  };
-  const connectDB = async () => {
-    try {
-      const { isConnected } = await createConnection(defaultConnection);
-      return isConnected;
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
-  };
-
-  const graphqlServer = async () => {
-    const yogaServer = new GraphQLServer({
-      typeDefs: GraphQLSetup().getProps().typeDefs,
-      resolvers: GraphQLSetup().getProps().resolvers
-    });
-
-    const options: Options = {
-      port: process.env.PORT,
-      endpoint: `/${process.env.ENDPOINT}`,
-      subscriptions: `/${process.env.SUBSCRIPTIONS}`,
-      playground: `/${process.env.PLAYGROUND}`
-    };
-
-    await yogaServer.start(options, ({ port, endpoint }) =>
-      console.log(
-        `🚀 Server ready at: ${process.env.CONNECTION}://${process.env.HOST}:${port}${endpoint}`
-      )
+loadEnv();
+const server = {
+  logs(apolloServer: ApolloServer, isConnected: boolean) {
+    console.log(`🌎 [envoriment]: ${process.env.NODE_ENV}`);
+    console.log(`📖 [database]: ${isConnected}`);
+    console.log(
+      `🚀 Server ready at: ${process.env.CONNECTION}://${process.env.HOST}:${process.env.PORT}${apolloServer.graphqlPath}`
     );
-  };
+  },
 
-  const start = async () => {
-    const isConnected = await connectDB();
-    await graphqlServer();
-    logs(isConnected);
-  };
+  connectionPG: {
+    async create() {
+      const connectionOptions = await getConnectionOptions(
+        process.env.NODE_ENV
+      );
+      const connection = await createConnection({
+        ...connectionOptions,
+        name: 'default'
+      });
+      return connection;
+    },
+    async close() {
+      await getConnection().close();
+    }
+  },
 
-  return {
-    start
-  };
-}
+  apollo: {
+    create() {
+      return new ApolloServer({
+        typeDefs: GraphQLSetup().getProps().typeDefs,
+        resolvers: GraphQLSetup().getProps().resolvers
+      });
+    },
+    mock() {
+      return new ApolloServer({
+        typeDefs: GraphQLSetup().getProps().typeDefs,
+        resolvers: GraphQLSetup().getProps().resolvers,
+        mocks: true
+      });
+    }
+  },
+
+  app: {
+    async create() {
+      const app = express();
+      return app;
+    }
+  },
+
+  applyMiddlewares(apolloServer: ApolloServer, app: express.Express) {
+    apolloServer.applyMiddleware({
+      app,
+      cors: { origin: true, credentials: true }
+    });
+  },
+
+  createHTTPServer(app: express.Express): http.Server {
+    const httpServer = http.createServer(app);
+    return httpServer;
+  },
+
+  listen(httpServer: http.Server): void {
+    httpServer.listen(process.env.PORT, () => {});
+  },
+
+  async start() {
+    const connection = await this.connectionPG.create();
+    const apolloServer = this.apollo.create();
+    const app = await this.app.create();
+    this.applyMiddlewares(apolloServer, app);
+    const httpServer = this.createHTTPServer(app);
+    this.listen(httpServer);
+    this.logs(apolloServer, connection.isConnected);
+  }
+};
 
 export default server;

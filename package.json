@@ -3,12 +3,13 @@
   "version": "0.0.1",
   "description": "Start server with TypeScript, GraphQL, PG and TypeORM.",
   "scripts": {
-    "start": "npm run generate && ts-node-dev --respawn src/index.ts",
+    "start": "NODE_ENV=development npm run generate && ts-node-dev --respawn src/index.ts",
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
     "lint": "eslint --fix src/**/*.{js,jsx,ts,tsx}",
     "db": "docker-compose up --build",
     "generate": "graphql-codegen",
-    "test": "jest"
+    "test": "NODE_ENV=test jest",
+    "test:server": "NODE_ENV=test ts-node src/index.ts"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^1.15.4",
@@ -19,6 +20,7 @@
     "@types/bcrypt": "^3.0.0",
     "@types/jest": "^26.0.3",
     "@types/node": "^14.0.13",
+    "apollo-server-testing": "^2.15.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-typescript-prettier": "^2.1.1",
     "jest": "^26.1.0",
@@ -31,14 +33,19 @@
     "@graphql-tools/load-files": "^6.0.10",
     "@graphql-tools/merge": "^6.0.10",
     "@graphql-tools/schema": "^6.0.10",
+    "apollo-link": "^1.2.14",
+    "apollo-link-http": "^1.5.17",
+    "apollo-server-express": "^2.15.1",
     "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
+    "eslint-plugin-jest": "^23.17.1",
+    "express": "^4.17.1",
     "graphql": "^15.1.0",
-    "graphql-request": "^2.0.0",
-    "graphql-yoga": "^1.18.3",
+    "graphql-tag": "^2.10.3",
     "node-fetch": "^2.6.0",
     "pg": "^8.2.1",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.25"
+    "typeorm": "^0.2.25",
+    "zen-observable-ts": "^0.8.21"
   }
 }

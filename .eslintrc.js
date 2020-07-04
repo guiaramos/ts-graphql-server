@@ -1,3 +1,4 @@
 module.exports = {
-  extends: ["airbnb-typescript-prettier"],
+  plugins: ['jest'],
+  extends: ['airbnb-typescript-prettier', 'plugin:jest/recommended']
 };
