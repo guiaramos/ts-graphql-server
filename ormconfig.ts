@@ -21,7 +21,7 @@ const connectionOptions: ConnectionOptions[] = [
     entities,
     migrations,
     subscribers
-    // dropSchema: true,
+    // dropSchema: true
   },
   {
     name: 'test',
