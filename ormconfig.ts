@@ -32,7 +32,7 @@ const connectionOptions: ConnectionOptions[] = [
     username: String(process.env.TYPEORM_USERNAME),
     password: String(process.env.TYPEORM_PASSWORD),
     synchronize: true,
-    logging: true,
+    logging: false,
     entities,
     migrations,
     subscribers,
