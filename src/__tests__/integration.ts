@@ -25,7 +25,6 @@ describe('Mutations', function() {
   describe('User', function() {
     it('should register the user', async function() {
       const { mutate } = testServer();
-
       const response = await mutate({
         mutation: REGISTER,
         variables: MOCK_USER
