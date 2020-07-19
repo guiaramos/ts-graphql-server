@@ -25,8 +25,12 @@ export type IQueryHelloArgs = {
   name?: Maybe<Scalars['String']>;
 };
 
+export type ISuccess = {
+  message: Scalars['String'];
+};
+
 export type IMutation = {
-  register?: Maybe<Scalars['Boolean']>;
+  register: ISuccess;
 };
 
 export type IMutationRegisterArgs = {
@@ -151,6 +155,7 @@ export type DirectiveResolverFn<
 export type IResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Success: ResolverTypeWrapper<ISuccess>;
   Mutation: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
@@ -159,6 +164,7 @@ export type IResolversTypes = {
 export type IResolversParentTypes = {
   Query: {};
   String: Scalars['String'];
+  Success: ISuccess;
   Mutation: {};
   Boolean: Scalars['Boolean'];
 };
@@ -175,12 +181,20 @@ export type IQueryResolvers<
   >;
 };
 
+export type ISuccessResolvers<
+  ContextType = any,
+  ParentType extends IResolversParentTypes['Success'] = IResolversParentTypes['Success']
+> = {
+  message?: Resolver<IResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
 export type IMutationResolvers<
   ContextType = any,
   ParentType extends IResolversParentTypes['Mutation'] = IResolversParentTypes['Mutation']
 > = {
   register?: Resolver<
-    Maybe<IResolversTypes['Boolean']>,
+    IResolversTypes['Success'],
     ParentType,
     ContextType,
     RequireFields<IMutationRegisterArgs, 'email' | 'password'>
@@ -189,5 +203,6 @@ export type IMutationResolvers<
 
 export type IResolvers<ContextType = any> = {
   Query?: IQueryResolvers<ContextType>;
+  Success?: ISuccessResolvers<ContextType>;
   Mutation?: IMutationResolvers<ContextType>;
 };
