@@ -10,4 +10,7 @@ export default class User extends BaseEntity {
 
   @Column('text')
   password!: string;
+
+  @Column({ default: false })
+  isConfirmed!: boolean;
 }

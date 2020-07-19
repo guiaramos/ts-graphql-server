@@ -6,6 +6,7 @@ import User from '../../../entity/User/user.postgres';
 import ERRORS from '../../../constants/ERRORS';
 import SUCCESS from '../../../constants/SUCCESS';
 import { formatYupError } from '../../../lib/formatYupError';
+import { createConfirmedEmailLink } from '../../../lib/createConfirmedEmailLink';
 
 const schema = yup.object().shape({
   email: yup
@@ -21,12 +22,21 @@ const schema = yup.object().shape({
 
 const mutationRegister: IMutationResolvers['register'] = async (
   _,
-  { email, password }
+  { email, password },
+  ctx
 ) => {
   try {
     await schema.validate({ email, password });
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({ email, password: hashedPassword }).save();
+    const { id } = await User.create({
+      email,
+      password: hashedPassword
+    }).save();
+    const confirmLink = await createConfirmedEmailLink(id, ctx.redis);
+    /** TODO:
+     * Send confirmation email
+     */
+    console.log('confirmLink: ', confirmLink);
     return { message: SUCCESS.USER.CREATED };
   } catch (error) {
     if (error instanceof yup.ValidationError) formatYupError(error, email);

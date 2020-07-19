@@ -8,7 +8,7 @@ services:
     env_file:
       - .env # configure postgres
     volumes:
-      - pg_data:/var/lib/postgres/data # persist data even if container shuts down
+      - pg-data:/var/lib/postgres/data # persist data even if container shuts down
 
   postgres-test:
     image: postgres:11 # use 11th official postgres version
@@ -17,5 +17,14 @@ services:
     env_file:
       - .env.test # configure postgres
     command: -p 5433
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-data:/data
+
 volumes:
-  pg_data: # named volumes can be managed easier using docker-compose
+  pg-data:
+  redis-data:
