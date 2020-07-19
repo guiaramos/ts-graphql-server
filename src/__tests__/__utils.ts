@@ -5,6 +5,10 @@ import { ApolloServer } from 'apollo-server-express';
 import http from 'http';
 import Observable from 'zen-observable-ts';
 import { FetchResult } from 'apollo-link/lib/types';
+import {
+  ApolloServerTestClient,
+  createTestClient
+} from 'apollo-server-testing';
 import ServerFactory from '../server';
 
 module.exports.toPromise = toPromise;
@@ -49,3 +53,12 @@ export const startTestServer = async (server: ApolloServer) => {
     graphql: executeOperation
   };
 };
+
+/**
+ * Test Server
+ */
+export function testClient(): ApolloServerTestClient {
+  const { server } = constructTestServer();
+  const { mutate, query } = createTestClient(server);
+  return { query, mutate };
+}

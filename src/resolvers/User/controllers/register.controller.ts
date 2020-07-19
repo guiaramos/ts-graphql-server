@@ -1,5 +1,5 @@
-import { IMutationResolvers } from '../../../generated/graphql';
 import * as bcrypt from 'bcrypt';
+import { IMutationResolvers } from '../../../generated/graphql';
 import User from '../../../entity/User/user.postgres';
 
 const mutationRegister: IMutationResolvers['register'] = async (
