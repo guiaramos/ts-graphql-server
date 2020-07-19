@@ -2,6 +2,8 @@ import { REGISTER } from './__documents/user.documents';
 import ServerFactory from '../server';
 import User from '../entity/User/user.postgres';
 import { testClient } from './__utils';
+import ERRORS from '../constants/ERRORS';
+import SUCCESS from '../constants/SUCCESS';
 
 const MOCK_USER = { email: 'test@test.com', password: 'qwer1234' };
 
@@ -19,7 +21,7 @@ describe('Mutations', function() {
         mutation: REGISTER,
         variables: MOCK_USER
       });
-      expect(response?.data?.register).toBeTruthy();
+      expect(response?.data?.register.message).toBe(SUCCESS.USER.CREATED);
     });
 
     it('should have hashed password', async function() {
@@ -37,7 +39,7 @@ describe('Mutations', function() {
       });
       const message = response?.errors;
       expect(message ? message[0].message : 'no error message').toContain(
-        'duplicate key value violates unique constraint'
+        ERRORS.USER.ALREADY_EXISTS
       );
     });
   });

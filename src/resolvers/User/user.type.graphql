@@ -1,3 +1,7 @@
-type Mutation{
-    register(email:String!, password: String!): Boolean
+type Success {
+  message: String!
+}
+
+type Mutation {
+  register(email: String!, password: String!): Success!
 }
