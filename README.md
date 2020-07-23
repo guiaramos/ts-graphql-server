@@ -97,7 +97,7 @@ it('should return error if user already exists', async function() {
 
 ## Deployment
 
-There is no deployment for this project
+There is no deployment for this project yet
 
 ## Built With
 
