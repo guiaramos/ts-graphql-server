@@ -13,6 +13,9 @@ generates:
         - eslint --fix
     plugins:
       - add: // Auto Generated. Please don't edit, the changes will be overwritten
+      - add:
+          content:
+            - 'import { CustomContext } from "../graphql/index"'
       - 'typescript'
       - 'typescript-resolvers'
     config:
@@ -21,6 +24,7 @@ generates:
         Date: Date
       typesPrefix: I
       skipTypename: true
+      contextType: CustomContext
       enumsAsTypes: true
       maybeValue: T | undefined
       namingConvention:
