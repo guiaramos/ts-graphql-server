@@ -1,7 +1,7 @@
-# NodeJS GraphQL Server
+# NodeJS GraphQL Server :construction:
  ![Node.js CI](https://github.com/guiaramos/ts-graphql-server/workflows/Node.js%20CI/badge.svg)
 
-This project has the objective of being a boilerplate for my new proejcts
+:construction: WIP: This project has the objective of being a boilerplate for my new proejcts
 
 ## Getting Started
 
