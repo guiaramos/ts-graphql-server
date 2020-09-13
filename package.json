@@ -44,7 +44,7 @@
     "express": "^4.17.1",
     "graphql": "^15.1.0",
     "graphql-tag": "^2.10.3",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "pg": "^8.2.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.25",
