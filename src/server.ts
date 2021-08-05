@@ -3,7 +3,9 @@ import http from 'http';
 import { createConnection, getConnection, getConnectionOptions } from 'typeorm';
 import { ApolloServer } from 'apollo-server-express';
 import GraphQLSetup from './graphql';
-import { loadEnv } from './lib/loadEnvoriment';
+import { loadEnv } from './lib/loadEnvironment';
+import ROUTES from './constants/ROUTES';
+import { confirmEmailController } from './controllers/confirmEmailController';
 
 loadEnv();
 const server = {
@@ -11,7 +13,7 @@ const server = {
     console.log(`🌎 [envoriment]: ${process.env.NODE_ENV}`);
     console.log(`📖 [database]: ${isConnected}`);
     console.log(
-      `🚀 Server ready at: ${process.env.CONNECTION}://${process.env.HOST}:${process.env.PORT}${apolloServer.graphqlPath}`
+      `🚀 Server ready at: ${process.env.PROTOCOL}://${process.env.HOST}:${process.env.PORT}${apolloServer.graphqlPath}`
     );
   },
 
@@ -35,13 +37,15 @@ const server = {
     create() {
       return new ApolloServer({
         typeDefs: GraphQLSetup().getProps().typeDefs,
-        resolvers: GraphQLSetup().getProps().resolvers
+        resolvers: GraphQLSetup().getProps().resolvers,
+        context: GraphQLSetup().getProps().context
       });
     },
     mock() {
       return new ApolloServer({
         typeDefs: GraphQLSetup().getProps().typeDefs,
         resolvers: GraphQLSetup().getProps().resolvers,
+        context: GraphQLSetup().getProps().context,
         mocks: true
       });
     }
@@ -66,14 +70,19 @@ const server = {
     return httpServer;
   },
 
+  routes(app: express.Express) {
+    app.get(`${ROUTES.CONFIRM_EMAIL}/:id`, confirmEmailController);
+  },
+
   listen(httpServer: http.Server): void {
-    httpServer.listen(process.env.PORT, () => {});
+    httpServer.listen(process.env.PORT);
   },
 
   async start() {
     const connection = await this.connectionPG.create();
     const apolloServer = this.apollo.create();
     const app = await this.app.create();
+    this.routes(app);
     this.applyMiddlewares(apolloServer, app);
     const httpServer = this.createHTTPServer(app);
     this.listen(httpServer);

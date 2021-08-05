@@ -1,5 +1,6 @@
 // Auto Generated. Please don't edit, the changes will be overwritten
 import { GraphQLResolveInfo } from 'graphql';
+import { CustomContext } from '../graphql/index';
 
 export type Maybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
@@ -15,6 +16,12 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+};
+
+export type IUser = {
+  id: Scalars['ID'];
+  email: Scalars['String'];
+  isConfirmed?: Maybe<Scalars['Boolean']>;
 };
 
 export type IQuery = {
@@ -153,24 +160,42 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type IResolversTypes = {
-  Query: ResolverTypeWrapper<{}>;
+  User: ResolverTypeWrapper<IUser>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Query: ResolverTypeWrapper<{}>;
   Success: ResolverTypeWrapper<ISuccess>;
   Mutation: ResolverTypeWrapper<{}>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type IResolversParentTypes = {
-  Query: {};
+  User: IUser;
+  ID: Scalars['ID'];
   String: Scalars['String'];
+  Boolean: Scalars['Boolean'];
+  Query: {};
   Success: ISuccess;
   Mutation: {};
-  Boolean: Scalars['Boolean'];
+};
+
+export type IUserResolvers<
+  ContextType = CustomContext,
+  ParentType extends IResolversParentTypes['User'] = IResolversParentTypes['User']
+> = {
+  id?: Resolver<IResolversTypes['ID'], ParentType, ContextType>;
+  email?: Resolver<IResolversTypes['String'], ParentType, ContextType>;
+  isConfirmed?: Resolver<
+    Maybe<IResolversTypes['Boolean']>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
 export type IQueryResolvers<
-  ContextType = any,
+  ContextType = CustomContext,
   ParentType extends IResolversParentTypes['Query'] = IResolversParentTypes['Query']
 > = {
   hello?: Resolver<
@@ -182,7 +207,7 @@ export type IQueryResolvers<
 };
 
 export type ISuccessResolvers<
-  ContextType = any,
+  ContextType = CustomContext,
   ParentType extends IResolversParentTypes['Success'] = IResolversParentTypes['Success']
 > = {
   message?: Resolver<IResolversTypes['String'], ParentType, ContextType>;
@@ -190,7 +215,7 @@ export type ISuccessResolvers<
 };
 
 export type IMutationResolvers<
-  ContextType = any,
+  ContextType = CustomContext,
   ParentType extends IResolversParentTypes['Mutation'] = IResolversParentTypes['Mutation']
 > = {
   register?: Resolver<
@@ -201,7 +226,8 @@ export type IMutationResolvers<
   >;
 };
 
-export type IResolvers<ContextType = any> = {
+export type IResolvers<ContextType = CustomContext> = {
+  User?: IUserResolvers<ContextType>;
   Query?: IQueryResolvers<ContextType>;
   Success?: ISuccessResolvers<ContextType>;
   Mutation?: IMutationResolvers<ContextType>;

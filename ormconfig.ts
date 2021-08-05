@@ -1,4 +1,4 @@
-import { loadEnv } from './src/lib/loadEnvoriment';
+import { loadEnv } from './src/lib/loadEnvironment';
 import { ConnectionOptions } from 'typeorm';
 
 loadEnv();
